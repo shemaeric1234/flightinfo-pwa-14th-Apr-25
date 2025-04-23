@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
+
+const RequestForm = lazy(() => import("./components/RequestForm")); // Lazy load the RequestForm component
+
 import {
   Grid,
   Typography,
@@ -229,7 +232,74 @@ function App() {
       }
     }
   };
-  console.log("showInstallButton==>", showInstallButton);
+
+  // 12. show notification
+  // Function to get delayed flight
+  const getDelayedFlight = (allFlights) => {
+    try {
+      allFlights.push({
+        airline: { name: "RwandaAir" },
+        flight: { iata: "AKH4500" },
+        departure: { scheduled: Date.now() + 1000 * 60 * 5 },
+        arrival: { airport: "Kigali International Airport" },
+        flight_status: "Delayed",
+      });
+
+      // Check if there are any flights available
+      if (!Array.isArray(allFlights) || allFlights.length === 0) {
+        console.log("No flights available.");
+        return "Flight named N/A have been delayed departure time N/A";
+      }
+
+      // Find the first delayed flight based on the scheduled departure time
+      const delayedFlight = allFlights.find((flight) => {
+        const scheduledTime = flight.departure?.scheduled;
+        return scheduledTime && scheduledTime <= Date.now() + 1000 * 60 * 30;
+      });
+
+      // If no delayed flight is found
+      if (!delayedFlight) {
+        console.log("No delayed flights found.");
+        return "Flight named N/A have been delayed departure time N/A";
+      }
+
+      // Extract relevant flight details
+      const flightName = delayedFlight.flight?.iata || "N/A";
+      const departureTime = delayedFlight.departure?.scheduled
+        ? new Date(delayedFlight.departure.scheduled).toLocaleTimeString()
+        : "N/A";
+      return `Flight named ${flightName} has been delayed. Scheduled departure time: ${departureTime}`;
+    } catch (error) {
+      console.error("Error while getting delayed flight:", error);
+      return "Flight named N/A have been delayed departure time N/A";
+    }
+  };
+  const flightDelayNotification = async () => {
+    if ("serviceWorker" in navigator && "Notification" in window) {
+      if (Notification.permission === "granted") {
+        const sw = await navigator.serviceWorker.ready;
+        sw.showNotification("Flight Delayed!", {
+          body: `Your ${getDelayedFlight(flightsToShow)}`,
+          icon: "/plane-icon.png",
+        });
+      } else if (Notification.permission !== "denied") {
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+          const sw = await navigator.serviceWorker.ready;
+          sw.showNotification("Flight Delayed!", {
+            body: `Your ${getDelayedFlight(flightsToShow)}`,
+            icon: "/plane-icon.png",
+          });
+        }
+      }
+    }
+  };
+
+  const showFlightDelayNotification = () => {
+    setTimeout(() => {
+      flightDelayNotification();
+    }, 1000 * 3); // 5 seconds delay for demo purposes
+  };
 
   return (
     <>
@@ -255,8 +325,19 @@ function App() {
             justifyContent={"center"}
             sx={{ margin: 5, width: "100%" }}
           >
-            <Button sx={{ margin: 2 }} onClick={showNotification}>
+            <Button
+              variant="outlined"
+              sx={{ margin: 2 }}
+              onClick={showNotification}
+            >
               Show notification
+            </Button>
+            <Button
+              variant="outlined"
+              sx={{ margin: 2 }}
+              onClick={showFlightDelayNotification}
+            >
+              Flight Delay notification
             </Button>
             {/* Install button */}
             {showInstallButton && (
@@ -268,23 +349,36 @@ function App() {
           <Divider sx={{ width: "100%" }} />
         </Grid>
         <h2>Request Flight Info</h2>
-        <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
-          <input
-            type="text"
-            placeholder="Your Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Flight Number"
-            value={flightNo}
-            onChange={(e) => setFlightNo(e.target.value)}
-            required
-          />
-          <button type="submit">Submit Request</button>
-        </form>
+        <Grid
+          container
+          justifyContent={"center"}
+          sx={{ margin: 5, width: "100%" }}
+        >
+          <form
+            onSubmit={handleSubmit}
+            style={{ marginBottom: "20px", width: "70%", padding: "20px" }}
+          >
+            <input
+              style={{ marginBottom: 2 }}
+              type="text"
+              placeholder="Your Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />{" "}
+            <br />
+            <input
+              style={{ marginBottom: 2 }}
+              type="text"
+              placeholder="Flight Number"
+              value={flightNo}
+              onChange={(e) => setFlightNo(e.target.value)}
+              required
+            />
+            <br />
+            <button type="submit">Submit Request</button>
+          </form>
+        </Grid>
         {flightsToShow.length === 0 ? (
           <Grid
             container
