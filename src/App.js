@@ -302,6 +302,21 @@ function App() {
 
   return (
     <>
+      {showInstallBanner && (
+        <div style={{ textAlign: "center", margin: "20px 0" }}>
+          <Typography variant="h6" sx={{ marginBottom: 2 }}>
+            Install Flight Schedule App on your device!
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleInstall}
+            style={{ marginBottom: 2 }}
+          >
+            Install Now
+          </Button>
+        </div>
+      )}
       <Grid container justifyContent={"center"}>
         <Grid
           container
@@ -343,7 +358,7 @@ function App() {
               <Button
                 variant="outlined"
                 onClick={handleInstall}
-                style={{ marginBottom: 2 }}
+                sx={{ margin: 2 }}
               >
                 Install App
               </Button>

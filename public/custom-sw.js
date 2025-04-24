@@ -1,4 +1,4 @@
-const CACHE_NAME = "new-flightinfo-pwa-v3";
+const CACHE_NAME = "new-flightinfo-pwa-v3.2";
 
 const BASE = self.location.pathname.replace(/\/[^/]*$/, "");
 
@@ -110,7 +110,7 @@ async function syncOfflineRequests() {
     if (self.registration.showNotification) {
       self.registration.showNotification("Offline Requests Synced!", {
         body: "All your saved flight requests were submitted.",
-        icon: "/logo192.png",
+        icon: `${BASE}/logo192.png`,
       });
     }
 
