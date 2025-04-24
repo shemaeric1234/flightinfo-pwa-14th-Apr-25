@@ -1,4 +1,4 @@
-const CACHE_NAME = "new-flightinfo-pwa-v1.8";
+const CACHE_NAME = "new-flightinfo-pwa-v1.9";
 
 const urlsToCache = [
   "https://shemaeric1234.github.io/flightinfo-pwa-14th-Apr-25/",
