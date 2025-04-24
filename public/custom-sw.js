@@ -1,22 +1,33 @@
-const CACHE_NAME = "new-flightinfo-pwa-v1.9";
+const CACHE_NAME = "new-flightinfo-pwa-v3";
+
+const BASE = self.location.pathname.replace(/\/[^/]*$/, "");
 
 const urlsToCache = [
-  "/flightinfo-pwa-14th-Apr-25/",
-  "/flightinfo-pwa-14th-Apr-25/index.html",
-  "/flightinfo-pwa-14th-Apr-25/favicon.ico",
-  "/flightinfo-pwa-14th-Apr-25/logo192.png",
-  "/flightinfo-pwa-14th-Apr-25/logo512.png",
-  "/flightinfo-pwa-14th-Apr-25/manifest.json",
-  "/flightinfo-pwa-14th-Apr-25/static/css/main.*.css",
-  "/flightinfo-pwa-14th-Apr-25/static/js/main.*.js",
+  `${BASE}/`,
+  `${BASE}/index.html`,
+  `${BASE}/favicon.ico`,
+  `${BASE}/logo192.png`,
+  `${BASE}/logo512.png`,
+  `${BASE}/manifest.json`,
+  `${BASE}/static/css/main.css`,
+  `${BASE}/static/js/main.js`,
 ];
 
 // ----------- INSTALL ----------
 self.addEventListener("install", (event) => {
   console.log("[Service Worker] Installing...");
-  self.skipWaiting(); // Skip waiting to activate new SW immediately
+  self.skipWaiting();
+
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then(async (cache) => {
+      for (const url of urlsToCache) {
+        try {
+          await cache.add(url);
+        } catch (err) {
+          console.warn("[SW] Failed to cache during install:", url, err);
+        }
+      }
+    })
   );
 });
 
@@ -25,15 +36,15 @@ self.addEventListener("activate", (event) => {
   console.log("[Service Worker] Activating...");
   // self.clientsClaim(); // Take control of pages immediately
   event.waitUntil(
-    caches
-      .keys()
-      .then((cacheNames) =>
-        Promise.all(
-          cacheNames
-            .filter((name) => name !== CACHE_NAME)
-            .map((name) => caches.delete(name))
-        )
-      )
+    caches.open(CACHE_NAME).then(async (cache) => {
+      for (const url of urlsToCache) {
+        try {
+          await cache.add(url);
+        } catch (e) {
+          console.warn("[Service Worker] Failed to cache:", url, e);
+        }
+      }
+    })
   );
 });
 
