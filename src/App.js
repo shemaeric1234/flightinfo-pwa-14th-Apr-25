@@ -340,7 +340,11 @@ function App() {
             </Button>
             {/* Install button */}
             {showInstallButton && (
-              <Button onClick={handleInstall} style={{ marginBottom: 2 }}>
+              <Button
+                variant="outlined"
+                onClick={handleInstall}
+                style={{ marginBottom: 2 }}
+              >
                 Install App
               </Button>
             )}

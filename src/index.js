@@ -39,7 +39,9 @@ root.render(
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register("/custom-sw.js")
+      .register(
+        "https://shemaeric1234.github.io/flightinfo-pwa-14th-Apr-25/custom-sw.js"
+      )
       .then((reg) => {
         console.log("Custom SW registered:", reg);
       })
