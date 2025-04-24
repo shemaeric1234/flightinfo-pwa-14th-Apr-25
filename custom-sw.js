@@ -1,14 +1,14 @@
-const CACHE_NAME = "new-flightinfo-pwa-v1.9";
+const CACHE_NAME = "new-flightinfo-pwa-v2.0";
 
 const urlsToCache = [
-  "https://shemaeric1234.github.io/flightinfo-pwa-14th-Apr-25/",
-  "https://shemaeric1234.github.io/flightinfo-pwa-14th-Apr-25/index.html",
-  "https://shemaeric1234.github.io/flightinfo-pwa-14th-Apr-25/favicon.ico",
-  "https://shemaeric1234.github.io/flightinfo-pwa-14th-Apr-25/logo192.png",
-  "https://shemaeric1234.github.io/flightinfo-pwa-14th-Apr-25/logo512.png",
-  "https://shemaeric1234.github.io/flightinfo-pwa-14th-Apr-25/manifest.json",
-  "https://shemaeric1234.github.io/flightinfo-pwa-14th-Apr-25/static/css/main.css",
-  "https://shemaeric1234.github.io/flightinfo-pwa-14th-Apr-25/static/js/main.js",
+  "/flightinfo-pwa-14th-Apr-25/",
+  "/flightinfo-pwa-14th-Apr-25/index.html",
+  "/flightinfo-pwa-14th-Apr-25/favicon.ico",
+  "/flightinfo-pwa-14th-Apr-25/logo192.png",
+  "/flightinfo-pwa-14th-Apr-25/logo512.png",
+  "/flightinfo-pwa-14th-Apr-25/manifest.json",
+  "/flightinfo-pwa-14th-Apr-25/static/css/main.*.css",
+  "/flightinfo-pwa-14th-Apr-25/static/js/main.*.js",
 ];
 
 // ----------- INSTALL ----------
