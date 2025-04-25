@@ -1,4 +1,4 @@
-const CACHE_NAME = "new-flightinfo-pwa-v3.2";
+const CACHE_NAME = "new-flightinfo-pwa-v3.3";
 
 const BASE = self.location.pathname.replace(/\/[^/]*$/, "");
 

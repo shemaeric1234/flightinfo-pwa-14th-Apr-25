@@ -302,7 +302,7 @@ function App() {
 
   return (
     <>
-      {showInstallBanner && (
+      {showInstallButton && (
         <div style={{ textAlign: "center", margin: "20px 0" }}>
           <Typography variant="h6" sx={{ marginBottom: 2 }}>
             Install Flight Schedule App on your device!
