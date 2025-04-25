@@ -1,4 +1,4 @@
-const CACHE_NAME = "new-flightinfo-pwa-v3.3";
+const CACHE_NAME = "new-flightinfo-pwa-v3.4";
 
 const BASE = self.location.pathname.replace(/\/[^/]*$/, "");
 
@@ -9,8 +9,8 @@ const urlsToCache = [
   `${BASE}/logo192.png`,
   `${BASE}/logo512.png`,
   `${BASE}/manifest.json`,
-  `${BASE}/static/css/main.css`,
-  `${BASE}/static/js/main.js`,
+  `${BASE}/static/css/main.*.css`,
+  `${BASE}/static/js/main.*.js`,
 ];
 
 // ----------- INSTALL ----------
